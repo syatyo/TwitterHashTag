@@ -25,8 +25,9 @@ tag = "エンジニア生存戦略"
 # iのインクリメント検証では678回回った。
  i = 0
 client.search("##{tag}", lang: "ja", result_type: "recent", count: 100).take(1000).map do |tweet|
-   i += 1
-   puts "#{i}件目のツイート"
+  i += 1
+  puts "#{i}件目のツイート"
+
   if tweet.user.id != MY_TWITTER_ID then
     client.follow(tweet.user.id)
     puts "#Followed #{tweet.user.id}"
