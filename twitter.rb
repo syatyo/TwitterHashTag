@@ -8,19 +8,20 @@
 require "bundler"
 Bundler.require
 require "twitter"
+require "./secret"
 
 # do
 client = Twitter::REST::Client.new do |config|
-  config.consumer_key        = "CONSUMER_KEY"
-  config.consumer_secret     = "CONSUMER_SECRET"
-  config.access_token        = "ACCESS_TOKEN"
-  config.access_token_secret = "ACCESS_TOKEN_SECRET"
+  config.consumer_key        = CONSUMER_KEY
+  config.consumer_secret     = CONSUMER_SECRET
+  config.access_token        = ACCESS_TOKEN
+  config.access_token_secret = ACCESS_TOKEN_SECRET
 end
 
 limit = 10
 
 tag = "エンジニア生存戦略"
 
-client.search("#{tag}", lang: "ja", result_type: "recent", count: 1).take(limit).map do |tweet|
+client.search("##{tag}", lang: "ja", result_type: "recent", count: 1).take(limit).map do |tweet|
   puts "#{tweet.user.name}: #{tweet.text}"
 end
