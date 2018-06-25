@@ -29,8 +29,16 @@ client.search("##{tag}", lang: "ja", result_type: "recent", count: 100).take(100
   puts "#{i}件目のツイート"
 
   if tweet.user.id != MY_TWITTER_ID then
-    client.follow(tweet.user.id)
-    puts "#Followed #{tweet.user.id}"
+    follow = client.follow(tweet.user.id)
+    begin
+      puts "#Followed #{tweet.user.id}"
+      puts "#{follow}"
+    rescue Twitter::Error::TooManyRequests => error
+      # NOTE: Your process could go to sleep for up to 15 minutes but if you
+      # retry any sooner, it will almost certainly fail with the same exception.
+      sleep error.rate_limit.reset_in + 1
+      retry
+    end
   end
 
 end
